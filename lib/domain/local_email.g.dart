@@ -62,6 +62,11 @@ const LocalEmailSchema = CollectionSchema(
       id: 8,
       name: r'timestamp',
       type: IsarType.dateTime,
+    ),
+    r'summary': PropertySchema(
+      id: 9,
+      name: r'summary',
+      type: IsarType.string,
     )
   },
   estimateSize: _localEmailEstimateSize,
@@ -129,6 +134,7 @@ int _localEmailEstimateSize(
   bytesCount += 3 + object.from.length * 3;
   bytesCount += 3 + object.messageId.length * 3;
   bytesCount += 3 + object.subject.length * 3;
+  bytesCount += 3 + object.summary.length * 3;
   return bytesCount;
 }
 
@@ -147,6 +153,7 @@ void _localEmailSerialize(
   writer.writeString(offsets[6], object.messageId);
   writer.writeString(offsets[7], object.subject);
   writer.writeDateTime(offsets[8], object.timestamp);
+  writer.writeString(offsets[9], object.summary);
 }
 
 LocalEmail _localEmailDeserialize(
@@ -167,6 +174,7 @@ LocalEmail _localEmailDeserialize(
     messageId: reader.readString(offsets[6]),
     subject: reader.readString(offsets[7]),
     timestamp: reader.readDateTime(offsets[8]),
+    summary: reader.readString(offsets[9]),
   );
   object.id = id;
   return object;
@@ -198,6 +206,8 @@ P _localEmailDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 8:
       return (reader.readDateTime(offset)) as P;
+    case 9:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }

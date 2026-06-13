@@ -23,6 +23,7 @@ class LocalEmail {
 
   final double importanceScore;
   final bool isPinned;
+  final String summary;
 
   LocalEmail({
     required this.messageId,
@@ -34,6 +35,7 @@ class LocalEmail {
     this.category = EmailCategory.general,
     this.importanceScore = 0.0,
     this.isPinned = false,
+    this.summary = '',
   });
 }
 
